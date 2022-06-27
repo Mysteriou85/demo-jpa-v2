@@ -17,19 +17,14 @@ public class Emprunt {
     @GenericGenerator(name = "seqEmprunt", strategy = "increment")
     private int id;
 
-    @Column(name = "DATE_DEBUT", nullable = false)
+    @Column(name = "DATE_DEBUT", columnDefinition = "TIMESTAMP", nullable = false)
     private LocalDateTime dateDebut;
 
-    @Column(name = "DATE_FIN")
+    @Column(name = "DATE_FIN", columnDefinition = "TIMESTAMP")
     private LocalDateTime dateFin;
 
     @Column(name = "DELAI")
     private int delai;
-
-//    @ManyToOne
-//    @JoinColumn(name = "")
-//    @Column(name = "ID_CLIENT", nullable = false)
-//    private int idClient;
 
     @ManyToOne
     @JoinColumn(name = "ID_CLIENT")
@@ -104,8 +99,9 @@ public class Emprunt {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Emprunt [");
-//        sb.append("id = ").append(id);
+        sb.append("id = ").append(id);
         sb.append(", dateDebut = ").append(dateDebut);
+//        sb.append("dateDebut = ").append(dateDebut);
         sb.append(", dateFin = ").append(dateFin);
         sb.append(", delai = ").append(delai);
         sb.append(", client = ").append(client);

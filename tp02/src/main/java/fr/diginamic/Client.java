@@ -21,6 +21,9 @@ public class Client {
     @Column(name = "PRENOM", length = 50, nullable = false)
     private String prenom;
 
+    @Column
+    @OneToMany
+    private Set<Emprunt> emprunts;
 
     // Constructor
     public Client() {
@@ -55,6 +58,14 @@ public class Client {
 
     public void setPrenom(String prenom) {
         this.prenom = prenom;
+    }
+
+    public Set<Emprunt> getEmprunts() {
+        return emprunts;
+    }
+
+    public void setEmprunts(Set<Emprunt> emprunts) {
+        this.emprunts = emprunts;
     }
 
     @Override

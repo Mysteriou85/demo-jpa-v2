@@ -50,6 +50,23 @@ public class ConnexionJpaTP02 {
         List<Emprunt> emprunts = empruntsDunClient.getResultList();
         emprunts.forEach(System.out::println);
 
+        // Exo : Lister les emprunts d'un clients vavec la relation @oneToMany depuis Client vers Emprunt
+        System.out.println("    Liste emprunts du client 1 :");
+        Client client1 = em.find(Client.class, 1);
+
+//        Emprunt newEmprunt = new Emprunt(
+//                LocalDateTime.now(),
+//                LocalDateTime.now().plusWeeks(2L),
+//                10,
+//                client1
+//        );
+//        client1.getEmprunts().add(newEmprunt);
+//        em.persist(newEmprunt);
+//        client1 = em.merge(client1);
+
+        //client1.getEmprunts().add(new Emprunt());
+        client1.getEmprunts().forEach(System.out::println);
+
         em.getTransaction().commit();
     }
 }

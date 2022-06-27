@@ -1,0 +1,6 @@
+create database jpaBanqueTP04;
+create table Client (ID integer(10) NOT NULL AUTO_INCREMENT PRIMARY KEY, NOM varchar(50) NOT NULL, PRENOM varchar(50) NOT NULL);
+create table Compte (
+create table Operation (
+create table Adresse (
+create table Banque (
