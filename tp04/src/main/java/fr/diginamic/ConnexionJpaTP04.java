@@ -82,7 +82,7 @@ public class ConnexionJpaTP04 {
 
         nouveauCompteADeux.setClients(clientList2);
 
-        em.persist(nouveauCompteADeux);
+        // em.persist(nouveauCompteADeux);
 
         //em.persist(nouveauCompteADeux);
 
