@@ -1,4 +1,7 @@
-package fr.diginamic.entity;
+package fr.diginamic.entity.compte;
+
+import fr.diginamic.entity.Client;
+import fr.diginamic.entity.operation.Operation;
 
 import javax.persistence.Entity;
 import java.util.List;

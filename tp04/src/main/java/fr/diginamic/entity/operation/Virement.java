@@ -1,4 +1,6 @@
-package fr.diginamic.entity;
+package fr.diginamic.entity.operation;
+
+import fr.diginamic.entity.compte.Compte;
 
 import javax.persistence.Entity;
 import java.time.LocalDate;

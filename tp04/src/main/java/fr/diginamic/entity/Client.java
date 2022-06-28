@@ -1,5 +1,6 @@
 package fr.diginamic.entity;
 
+import fr.diginamic.entity.compte.Compte;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;

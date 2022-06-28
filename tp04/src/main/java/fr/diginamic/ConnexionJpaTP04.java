@@ -1,6 +1,8 @@
 package fr.diginamic;
 
 import fr.diginamic.entity.*;
+import fr.diginamic.entity.compte.Compte;
+import fr.diginamic.entity.operation.Operation;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -18,21 +20,27 @@ public class ConnexionJpaTP04 {
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
 
-        // Création d'une nouvelle adresse
+        // ***********************************
+        // * Création d'une nouvelle adresse *
+        // ***********************************
         Adresse nouvelleAdresse = new Adresse();
         nouvelleAdresse.setNumero(26);
         nouvelleAdresse.setRue("Rue de Pierre");
         nouvelleAdresse.setCodePostal(85400);
         nouvelleAdresse.setVille("Nulpart");
 
-        // Création d'un nouveau client
+        // ********************************
+        // * Création d'un nouveau client *
+        // ********************************
         Client nouveauClient = new Client();
         nouveauClient.setNom("Guy");
         nouveauClient.setPrenom("George");
         nouveauClient.setDateNaissance(LocalDate.of(1990, 02, 12));
         nouveauClient.setAdresse(nouvelleAdresse);
 
-        // Création d'une nouvelle banque
+        // **********************************
+        // * Création d'une nouvelle banque *
+        // **********************************
         Banque nouvelleBanque = new Banque();
         nouvelleBanque.setNom("Banquepasterrible");
         nouveauClient.setBanque(nouvelleBanque);
@@ -42,7 +50,9 @@ public class ConnexionJpaTP04 {
 
         nouvelleBanque.setClients(clientSet);
 
-        // Création d'un nouveau compte
+        // ********************************
+        // * Création d'un nouveau compte *
+        // ********************************
         Compte nouveauCompte = new Compte();
         nouveauCompte.setNumero("0004");
         nouveauCompte.setSolde(1500d);
@@ -51,9 +61,11 @@ public class ConnexionJpaTP04 {
 
         nouveauCompte.setClients(clientList);
 
-        // Création d'un compte avec deux individus
+        // ********************************************
+        // * Création d'un compte avec deux individus *
+        // ********************************************
         Compte nouveauCompteADeux = new Compte();
-        nouveauCompteADeux.setNumero("0005");
+        nouveauCompteADeux.setNumero("0006");
         nouveauCompteADeux.setSolde(5000d);
 
         List<Client> clientList2 = new ArrayList<>();
@@ -62,11 +74,21 @@ public class ConnexionJpaTP04 {
         clientList2.add(selectClient1);
         clientList2.add(selectClient2);
 
+//        nouveauCompteADeux.getClients().add(selectClient1);
+//        nouveauCompteADeux.getClients().add(selectClient2);
+
+        selectClient1.getComptes().add(nouveauCompteADeux);
+        selectClient2.getComptes().add(nouveauCompteADeux);
+
         nouveauCompteADeux.setClients(clientList2);
+
+        em.persist(nouveauCompteADeux);
 
         //em.persist(nouveauCompteADeux);
 
-        // Création d'une nouvelle opération
+        // *************************************
+        // * Création d'une nouvelle opération *
+        // *************************************
         Operation nouvelleOperation = new Operation();
         nouvelleOperation.setDate(LocalDate.of(2020, 1, 10));
         nouvelleOperation.setMontant(1000d);
