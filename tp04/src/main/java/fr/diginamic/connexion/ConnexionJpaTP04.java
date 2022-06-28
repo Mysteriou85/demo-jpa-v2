@@ -20,15 +20,15 @@ public class ConnexionJpaTP04 {
 
         // Création d'une nouvelle adresse
         Adresse nouvelleAdresse = new Adresse();
-        nouvelleAdresse.setNumero(15);
+        nouvelleAdresse.setNumero(12);
         nouvelleAdresse.setRue("Rue de George");
         nouvelleAdresse.setCodePostal(85400);
         nouvelleAdresse.setVille("Nulpart");
 
         // Création d'un nouveau client
         Client nouveauClient = new Client();
-        nouveauClient.setNom("Guy");
-        nouveauClient.setPrenom("George");
+        nouveauClient.setNom("Mec");
+        nouveauClient.setPrenom("Billy");
         nouveauClient.setDateNaissance(LocalDate.of(1990, 05, 25));
         nouveauClient.setAdresse(nouvelleAdresse);
 
@@ -44,12 +44,28 @@ public class ConnexionJpaTP04 {
 
         // Création d'un nouveau compte
         Compte nouveauCompte = new Compte();
-        nouveauCompte.setNumero("0001");
+        nouveauCompte.setNumero("0002");
         nouveauCompte.setSolde(1000d);
 
         List<Client> clientList = new ArrayList<>();
 
         nouveauCompte.setClients(clientList);
+
+        // Création d'un compte avec deux individus
+        Compte nouveauCompteADeux = new Compte();
+        nouveauCompteADeux.setNumero("0003");
+        nouveauCompteADeux.setSolde(1000d);
+
+        List<Client> clientList2 = new ArrayList<>();
+        Client selectClient1 = em.find(Client.class, 1);
+        Client selectClient2 = em.find(Client.class, 2);
+        clientList2.add(selectClient1);
+        clientList2.add(selectClient2);
+
+        nouveauCompteADeux.setClients(clientList2);
+
+        em.persist(nouveauCompteADeux);
+
 
         // Création d'une nouvelle opération
         Operation nouvelleOperation = new Operation();
@@ -58,10 +74,10 @@ public class ConnexionJpaTP04 {
         nouvelleOperation.setMotif("Parceque");
         nouvelleOperation.setCompte(nouveauCompte);
 
-        em.persist(nouveauClient);
-        em.persist(nouveauCompte);
-        em.persist(nouvelleBanque);
-        em.persist(nouvelleOperation);
+        //em.persist(nouveauClient);
+        //em.persist(nouveauCompte);
+        //em.persist(nouvelleBanque);
+        //em.persist(nouvelleOperation);
         //nouveauClient = em.merge(nouveauClient);
 
         em.getTransaction().commit();
