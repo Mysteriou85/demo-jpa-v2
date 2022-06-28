@@ -1,4 +1,4 @@
-package fr.diginamic;
+package fr.diginamic.entity;
 
 import javax.persistence.Entity;
 import java.time.LocalDateTime;

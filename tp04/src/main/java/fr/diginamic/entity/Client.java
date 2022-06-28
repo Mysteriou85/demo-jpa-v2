@@ -1,10 +1,9 @@
-package fr.diginamic;
+package fr.diginamic.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -29,14 +28,14 @@ public class Client {
     @Embedded
     private Adresse adresse;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_BANQUE")
     private Banque banque;
 
-    @ManyToMany
-    @JoinTable(name = "LIEN_CLIENT_COMPTE",
-            joinColumns = @JoinColumn(name = "ID_CLIENT", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "ID_COMPTE", referencedColumnName = "ID"))
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+//    @JoinTable(name = "LIEN_CLIENT_COMPTE",
+//            joinColumns = @JoinColumn(name = "ID_CLIENT", referencedColumnName = "ID"),
+//            inverseJoinColumns = @JoinColumn(name = "ID_COMPTE", referencedColumnName = "ID"))
     private List<Compte> comptes;
 
     // Constructor

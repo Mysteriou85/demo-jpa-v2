@@ -1,4 +1,4 @@
-package fr.diginamic;
+package fr.diginamic.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
