@@ -22,7 +22,7 @@ public class Client {
     private String prenom;
 
     @Column
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private Set<Emprunt> emprunts;
 
     // Constructor
