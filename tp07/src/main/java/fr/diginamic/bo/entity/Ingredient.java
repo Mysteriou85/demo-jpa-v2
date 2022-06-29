@@ -1,26 +1,26 @@
-package fr.diginamic.bo.entity.elementProduit;
+package fr.diginamic.bo.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "marque")
-public class Marque {
+@Table(name = "ingredient")
+public class Ingredient {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seqMarque")
-    @GenericGenerator(name = "seqMarque", strategy = "increment")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seqIngredient")
+    @GenericGenerator(name = "seqIngredient", strategy = "increment")
     private Integer id;
 
     @Column(name = "LIBELLE")
     private String libelle;
 
-    public Marque() {
+    public Ingredient() {
     }
 
-    public Marque(String libelle) {
+    public Ingredient(String libelle) {
         this.libelle = libelle;
     }
 

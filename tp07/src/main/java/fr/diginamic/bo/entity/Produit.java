@@ -1,6 +1,5 @@
 package fr.diginamic.bo.entity;
 
-import fr.diginamic.bo.entity.elementProduit.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
