@@ -1,21 +1,65 @@
 package fr.diginamic.bo;
 
+import fr.diginamic.bo.entity.elementProduit.Marque;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class LectureSCV {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, URISyntaxException {
 
-        Path path = Paths.get("tp07/src/main/resources/open-food-facts.csv");
-        List<String>lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-        String[] ligne = lines.get(1).split("\\|");
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("demo-jpa");
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
 
-        for (String element : ligne) {
-            System.out.println(element);
+        List<String[]> lignes = new ArrayList<>();
+        try(Stream<String> stream = Files.lines((Path.of(ClassLoader.getSystemResource("open-food-facts.csv").toURI())), StandardCharsets.UTF_8)) {
+            stream.forEach(line -> {
+                lignes.add(line.split("\\|"));
+            });
+            for (String[] ligne : lignes) {
+                if (ligne.length == 30) {
+                    // *************
+                    // * Catégorie *
+                    // *************
+
+                    // **********
+                    // * Marque *
+                    // **********
+
+                    System.out.println(ligne);
+
+                }
+            }
         }
+
+
+
+        // *
+        // * TEST Global
+        // *
+//        int id = 0;
+//
+//        do {
+//
+//            String[] ligne = lines.get(id).split("\\|");
+//
+//            for (String element : ligne) {
+//                System.out.print(element + " | ");
+//            }
+//
+//            id++;
+//        } while (lines.iterator().hasNext());
+
     }
 }
