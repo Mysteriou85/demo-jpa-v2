@@ -2,9 +2,7 @@ package fr.diginamic.bo;
 
 import fr.diginamic.bo.entity.*;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
@@ -34,41 +32,82 @@ public class LectureSCV {
             Allergene allergene = new Allergene();
             Additif additif = new Additif();
 
-//            em.getTransaction().begin();
+
+
+            TypedQuery<Categorie> rechercheCategorie = em.createQuery("SELECT e FROM Categorie e WHERE e.libelle= :libelle", Categorie.class);
+            TypedQuery<Marque> rechercheMarque = em.createQuery("SELECT e FROM Marque e WHERE e.libelle= :libelle", Marque.class);
+            TypedQuery<Ingredient> rechercheIngredient = em.createQuery("SELECT e FROM Ingredient e WHERE e.libelle= :libelle", Ingredient.class);
+            TypedQuery<Allergene> rechercheAllergene = em.createQuery("SELECT e FROM Allergene e WHERE e.libelle= :libelle", Allergene.class);
+            TypedQuery<Additif> rechercheAdditif = em.createQuery("SELECT e FROM Additif e WHERE e.libelle= :libelle", Additif.class);
+
+            int limit = 0;
 
             for (String[] ligne : lignes) {
-                if (ligne.length == 30 && !Arrays.equals(ligne, lignes.get(0))) {
+                if (ligne.length == 30 && !Arrays.equals(ligne, lignes.get(0)) && limit <= 50 ) {
+                    limit++;
+                    em.getTransaction().begin();
+
+                    // *************
                     // * Catégorie *
-                    // System.out.print("Catégorie: " + ligne[0]);
+                    // *************
                     categorie.setLibelle(ligne[0]);
-                    produit.setCategorie(categorie);
+                    rechercheCategorie.setParameter("libelle", categorie.getLibelle());
 
+                    List<Categorie> verifCategorie = rechercheCategorie.getResultList();
+                    if(verifCategorie.isEmpty()) {
+                        produit.setCategorie(categorie);
+                        em.persist(categorie);
+                    } else {
+                        produit.setCategorie(verifCategorie.get(0));
+                    }
+
+                    // **********
                     // * Marque *
-                    // System.out.print(", Marque: " + ligne[1]);
+                    // **********
                     marque.setLibelle(ligne[1]);
-                    produit.setMarque(marque);
+                    rechercheMarque.setParameter("libelle", marque.getLibelle());
 
+                    List<Marque> verifMarque = rechercheMarque.getResultList();
+                    if(verifMarque.isEmpty()) {
+                        produit.setMarque(marque);
+                        em.persist(marque);
+                    } else {
+                        produit.setMarque(verifMarque.get(0));
+                    }
+
+                    // *******
                     // * Nom *
-                    // System.out.print(", Nom: " + ligne[2]);
+                    // *******
                     produit.setNomProduit(ligne[2]);
 
+                    // *******************
                     // * Nutrition Grade *
-                    // System.out.print(", Nutrition Grade:" + ligne[3]);
+                    // *******************
                     produit.setScoreNutritionnel(ligne[3]);
 
+                    // **********************
                     // * Ingrédient (Liste) *
-                    // System.out.print(", Ingrédient:[");
+                    // **********************
                     String[] ligneIngredient = ligne[4].split(", ");
                     List<Ingredient> ingredientList = new ArrayList<>();
                     for (String s : ligneIngredient) {
-                        // System.out.print(s);
                         ingredient.setLibelle(s);
-                        ingredientList.add(ingredient);
+
+                        rechercheIngredient.setParameter("libelle", ingredient.getLibelle());
+
+                        List<Ingredient> verifIngredient = rechercheIngredient.getResultList();
+                        if(verifIngredient.isEmpty()) {
+                            ingredientList.add(ingredient);
+                            em.persist(ingredient);
+                        } else {
+                            ingredientList.add(verifIngredient.get(0));
+                        }
                     }
-                    // System.out.print("]");
                     produit.setIngredients(ingredientList);
 
+                    // ***************************
                     // * valeurs nutritionnelles *
+                    // ***************************
                     produit.setEnergie100g(String.valueOf(ligne[5]));
                     produit.setGraisse100g(String.valueOf(ligne[6]));
                     produit.setSucres100g(String.valueOf(ligne[7]));
@@ -94,26 +133,50 @@ public class LectureSCV {
 
                     produit.setPresenceHuilePalme(ligne[27]);
 
+                    // *********************
                     // * Allergene (Liste) *
+                    // *********************
                     String[] ligneAllergene = ligne[28].split(", ");
                     List<Allergene> allergeneList = new ArrayList<>();
                     for (String s : ligneAllergene) {
                         allergene.setLibelle(s);
-                        allergeneList.add(allergene);
+
+                        rechercheAllergene.setParameter("libelle", allergene.getLibelle());
+
+                        List<Allergene> verifAllergene = rechercheAllergene.getResultList();
+                        if(verifAllergene.isEmpty()) {
+                            allergeneList.add(allergene);
+                            em.persist(allergene);
+                        } else {
+                            allergeneList.add(verifAllergene.get(0));
+                        }
                     }
                     produit.setAllergenes(allergeneList);
 
+                    // *******************
                     // * Additif (Liste) *
+                    // *******************
                     String[] ligneAdditif = ligne[29].split(", ");
                     List<Additif> additifList = new ArrayList<>();
                     for (String s : ligneAdditif) {
                         additif.setLibelle(s);
-                        additifList.add(additif);
+
+                        rechercheAdditif.setParameter("libelle", additif.getLibelle());
+
+                        List<Additif> verifAdditif = rechercheAdditif.getResultList();
+                        if(verifAdditif.isEmpty()) {
+                            additifList.add(additif);
+                            em.persist(additif);
+                        } else {
+                            additifList.add(verifAdditif.get(0));
+                        }
                     }
                     produit.setAdditifs(additifList);
 
                     // Fin ligne
-                    System.out.println();
+                    // System.out.println();
+
+                    em.getTransaction().commit();
 
                 } else {
                     System.err.println("Cette valeur n'est pas lisible !");
