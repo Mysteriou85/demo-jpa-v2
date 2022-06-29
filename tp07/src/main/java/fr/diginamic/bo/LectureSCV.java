@@ -1,5 +1,7 @@
 package fr.diginamic.bo;
 
+import fr.diginamic.bo.entity.*;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -15,48 +17,109 @@ import java.util.stream.Stream;
 public class LectureSCV {
     public static void main(String[] args) throws IOException, URISyntaxException {
 
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("demo-jpa");
-        EntityManager em = entityManagerFactory.createEntityManager();
-        em.getTransaction().begin();
+//        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("demo-jpa");
+//        EntityManager em = entityManagerFactory.createEntityManager();
 
         List<String[]> lignes = new ArrayList<>();
         try(Stream<String> stream = Files.lines((Path.of(ClassLoader.getSystemResource("open-food-facts.csv").toURI())), StandardCharsets.UTF_8)) {
             stream.forEach(line -> {
                 lignes.add(line.split("\\|"));
             });
+
+            Produit produit = new Produit();
+            Categorie categorie = new Categorie();
+            Marque marque = new Marque();
+            Ingredient ingredient = new Ingredient();
+            Allergene allergene = new Allergene();
+            Additif additif = new Additif();
+
+//            em.getTransaction().begin();
+
             for (String[] ligne : lignes) {
                 if (ligne.length == 30) {
-                    // *************
+
                     // * Catégorie *
-                    // *************
+                    // System.out.print("Catégorie: " + ligne[0]);
+                    categorie.setLibelle(ligne[0]);
+                    produit.setCategorie(categorie);
 
-                    // **********
                     // * Marque *
-                    // **********
+                    // System.out.print(", Marque: " + ligne[1]);
+                    marque.setLibelle(ligne[1]);
+                    produit.setMarque(marque);
 
-                    System.out.println(ligne);
+                    // * Nom *
+                    // System.out.print(", Nom: " + ligne[2]);
+                    produit.setNomProduit(ligne[2]);
 
+                    // * Nutrition Grade *
+                    // System.out.print(", Nutrition Grade:" + ligne[3]);
+                    produit.setScoreNutritionnel(ligne[3]);
+
+                    // * Ingrédient (Liste) *
+                    // System.out.print(", Ingrédient:[");
+                    String[] ligneIngredient = ligne[4].split(", ");
+                    List<Ingredient> ingredientList = new ArrayList<>();
+                    for (String s : ligneIngredient) {
+                        // System.out.print(s);
+                        ingredient.setLibelle(s);
+                        ingredientList.add(ingredient);
+                    }
+                    // System.out.print("]");
+                    produit.setIngredients(ingredientList);
+
+                    // * valeurs nutritionnelles *
+                    produit.setEnergie100g(Double.valueOf(ligne[5]));
+                    produit.setGraisse100g(Double.valueOf(ligne[6]));
+                    produit.setSucres100g(Double.valueOf(ligne[7]));
+                    produit.setFibres100g(Double.valueOf(ligne[8]));
+                    produit.setProteines100g(Double.valueOf(ligne[9]));
+                    produit.setSel100g(Double.valueOf(ligne[10]));
+                    produit.setVitA100g(Double.valueOf(ligne[11]));
+                    produit.setVitD100g(Double.valueOf(ligne[12]));
+                    produit.setVitE100g(Double.valueOf(ligne[13]));
+                    produit.setVitK100g(Double.valueOf(ligne[14]));
+                    produit.setVitC100g(Double.valueOf(ligne[15]));
+                    produit.setVitB1100g(Double.valueOf(ligne[16]));
+                    produit.setVitB2100g(Double.valueOf(ligne[17]));
+                    produit.setVitPP100g(Double.valueOf(ligne[18]));
+                    produit.setVitB6100g(Double.valueOf(ligne[19]));
+                    produit.setVitB9100g(Double.valueOf(ligne[20]));
+                    produit.setVitB12100g(Double.valueOf(ligne[21]));
+                    produit.setCalcium100g(Double.valueOf(ligne[22]));
+                    produit.setMagnesium100G(Double.valueOf(ligne[23]));
+                    produit.setIron100G(Double.valueOf(ligne[24]));
+                    produit.setFer100G(Double.valueOf(ligne[25]));
+                    produit.setBetaCarotene100G(Double.valueOf(ligne[26]));
+
+                    produit.setPresenceHuilePalme(ligne[27]);
+
+                    // * Allergene (Liste) *
+                    String[] ligneAllergene = ligne[28].split(", ");
+                    List<Allergene> allergeneList = new ArrayList<>();
+                    for (String s : ligneAllergene) {
+                        allergene.setLibelle(s);
+                        allergeneList.add(allergene);
+                    }
+                    produit.setAllergenes(allergeneList);
+
+                    // * Additif (Liste) *
+                    String[] ligneAdditif = ligne[29].split(", ");
+                    List<Additif> additifList = new ArrayList<>();
+                    for (String s : ligneAllergene) {
+                        additif.setLibelle(s);
+                        additifList.add(additif);
+                    }
+                    produit.setAdditifs(additifList);
+
+                    // Fin ligne
+                    System.out.println();
+
+                } else {
+                    System.err.println("Cette valeur n'est pas lisible !");
                 }
             }
         }
-
-
-
-        // *
-        // * TEST Global
-        // *
-//        int id = 0;
-//
-//        do {
-//
-//            String[] ligne = lines.get(id).split("\\|");
-//
-//            for (String element : ligne) {
-//                System.out.print(element + " | ");
-//            }
-//
-//            id++;
-//        } while (lines.iterator().hasNext());
 
     }
 }

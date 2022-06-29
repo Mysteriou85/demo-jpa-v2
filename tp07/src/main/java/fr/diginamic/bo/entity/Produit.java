@@ -30,10 +30,10 @@ public class Produit {
                    String nomProduit,
                    String scoreNutritionnel,
                    List<Ingredient> ingredients,
-                   String energie100g, String graisse100g, String sucres100g, String fibres100g, String proteines100g,
-                   String sel100g, String vitA100g, String vitD100g, String vitE100g, String vitK100g, String vitC100g,
-                   String vitB1100g, String vitB2100g, String vitPP100g, String vitB6100g, String vitB9100g, String vitB12100g,
-                   String calcium100g, String magnesium100G, String iron100G, String fer100G, String betaCarotene100G,
+                   Double energie100g, Double graisse100g, Double sucres100g, Double fibres100g, Double proteines100g,
+                   Double sel100g, Double vitA100g, Double vitD100g, Double vitE100g, Double vitK100g, Double vitC100g,
+                   Double vitB1100g, Double vitB2100g, Double vitPP100g, Double vitB6100g, Double vitB9100g, Double vitB12100g,
+                   Double calcium100g, Double magnesium100G, Double iron100G, Double fer100G, Double betaCarotene100G,
                    String presenceHuilePalme,
                    List<Allergene> allergenes,
                    List<Additif> additifs) {
@@ -78,9 +78,11 @@ public class Produit {
     @GenericGenerator(name = "seqProduit", strategy = "increment")
     private Integer id;
 
-    @Column(name = "CATEGORIE")
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "LIBELLE_CATEGORIE")
     private Categorie categorie;
-    @Column(name = "MARQUE")
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "LIBELLE_MARQUE")
     private Marque marque;
     @Column(name = "SCORE_NUTRITIONNEL", length = 2)
     private String scoreNutritionnel;
@@ -92,50 +94,50 @@ public class Produit {
     // ***********************
 
     @Column(name = "ENERGIE_100G")
-    private String energie100g;
+    private Double energie100g;
     @Column(name = "GRAISSE_100G")
-    private String graisse100g;
+    private Double graisse100g;
     @Column(name = "SUCRES_100G")
-    private String sucres100g;
+    private Double sucres100g;
     @Column(name = "FIBRES_100G")
-    private String fibres100g;
+    private Double fibres100g;
     @Column(name = "PROTEINES_100G")
-    private String proteines100g;
+    private Double proteines100g;
     @Column(name = "SEL_100G")
-    private String sel100g;
+    private Double sel100g;
 
     @Column(name = "VITA_100G")
-    private String vitA100g;
+    private Double vitA100g;
     @Column(name = "VITD_100G")
-    private String vitD100g;
+    private Double vitD100g;
     @Column(name = "VITE_100G")
-    private String vitE100g;
+    private Double vitE100g;
     @Column(name = "VITK_100G")
-    private String vitK100g;
+    private Double vitK100g;
     @Column(name = "VITC_100G")
-    private String vitC100g;
+    private Double vitC100g;
     @Column(name = "VITB1_100G")
-    private String vitB1100g;
+    private Double vitB1100g;
     @Column(name = "VITB2_100G")
-    private String vitB2100g;
+    private Double vitB2100g;
     @Column(name = "VITPP_100G")
-    private String vitPP100g;
+    private Double vitPP100g;
     @Column(name = "VITB6_100G")
-    private String vitB6100g;
+    private Double vitB6100g;
     @Column(name = "VITB9_100G")
-    private String vitB9100g;
+    private Double vitB9100g;
     @Column(name = "VITB12_100G")
-    private String vitB12100g;
+    private Double vitB12100g;
     @Column(name = "CALCIUM_100G")
-    private String calcium100g;
+    private Double calcium100g;
     @Column(name = "MAGNESIUM_100G")
-    private String magnesium100G;
+    private Double magnesium100G;
     @Column(name = "IRON_100G")
-    private String iron100G;
+    private Double iron100G;
     @Column(name = "FER_100G")
-    private String fer100G;
+    private Double fer100G;
     @Column(name = "BETACAROTENE_100g")
-    private String betaCarotene100G;
+    private Double betaCarotene100G;
     @Column(name = "PRESENCE_HUILE_PALME")
     private String presenceHuilePalme;
 
@@ -191,179 +193,179 @@ public class Produit {
         this.nomProduit = nomProduit;
     }
 
-    public String getEnergie100g() {
+    public Double getEnergie100g() {
         return energie100g;
     }
 
-    public void setEnergie100g(String energie100g) {
+    public void setEnergie100g(Double energie100g) {
         this.energie100g = energie100g;
     }
 
-    public String getGraisse100g() {
+    public Double getGraisse100g() {
         return graisse100g;
     }
 
-    public void setGraisse100g(String graisse100g) {
+    public void setGraisse100g(Double graisse100g) {
         this.graisse100g = graisse100g;
     }
 
-    public String getSucres100g() {
+    public Double getSucres100g() {
         return sucres100g;
     }
 
-    public void setSucres100g(String sucres100g) {
+    public void setSucres100g(Double sucres100g) {
         this.sucres100g = sucres100g;
     }
 
-    public String getFibres100g() {
+    public Double getFibres100g() {
         return fibres100g;
     }
 
-    public void setFibres100g(String fibres100g) {
+    public void setFibres100g(Double fibres100g) {
         this.fibres100g = fibres100g;
     }
 
-    public String getProteines100g() {
+    public Double getProteines100g() {
         return proteines100g;
     }
 
-    public void setProteines100g(String proteines100g) {
+    public void setProteines100g(Double proteines100g) {
         this.proteines100g = proteines100g;
     }
 
-    public String getSel100g() {
+    public Double getSel100g() {
         return sel100g;
     }
 
-    public void setSel100g(String sel100g) {
+    public void setSel100g(Double sel100g) {
         this.sel100g = sel100g;
     }
 
-    public String getVitA100g() {
+    public Double getVitA100g() {
         return vitA100g;
     }
 
-    public void setVitA100g(String vitA100g) {
+    public void setVitA100g(Double vitA100g) {
         this.vitA100g = vitA100g;
     }
 
-    public String getVitD100g() {
+    public Double getVitD100g() {
         return vitD100g;
     }
 
-    public void setVitD100g(String vitD100g) {
+    public void setVitD100g(Double vitD100g) {
         this.vitD100g = vitD100g;
     }
 
-    public String getVitE100g() {
+    public Double getVitE100g() {
         return vitE100g;
     }
 
-    public void setVitE100g(String vitE100g) {
+    public void setVitE100g(Double vitE100g) {
         this.vitE100g = vitE100g;
     }
 
-    public String getVitK100g() {
+    public Double getVitK100g() {
         return vitK100g;
     }
 
-    public void setVitK100g(String vitK100g) {
+    public void setVitK100g(Double vitK100g) {
         this.vitK100g = vitK100g;
     }
 
-    public String getVitC100g() {
+    public Double getVitC100g() {
         return vitC100g;
     }
 
-    public void setVitC100g(String vitC100g) {
+    public void setVitC100g(Double vitC100g) {
         this.vitC100g = vitC100g;
     }
 
-    public String getVitB1100g() {
+    public Double getVitB1100g() {
         return vitB1100g;
     }
 
-    public void setVitB1100g(String vitB1100g) {
+    public void setVitB1100g(Double vitB1100g) {
         this.vitB1100g = vitB1100g;
     }
 
-    public String getVitB2100g() {
+    public Double getVitB2100g() {
         return vitB2100g;
     }
 
-    public void setVitB2100g(String vitB2100g) {
+    public void setVitB2100g(Double vitB2100g) {
         this.vitB2100g = vitB2100g;
     }
 
-    public String getVitPP100g() {
+    public Double getVitPP100g() {
         return vitPP100g;
     }
 
-    public void setVitPP100g(String vitPP100g) {
+    public void setVitPP100g(Double vitPP100g) {
         this.vitPP100g = vitPP100g;
     }
 
-    public String getVitB6100g() {
+    public Double getVitB6100g() {
         return vitB6100g;
     }
 
-    public void setVitB6100g(String vitB6100g) {
+    public void setVitB6100g(Double vitB6100g) {
         this.vitB6100g = vitB6100g;
     }
 
-    public String getVitB9100g() {
+    public Double getVitB9100g() {
         return vitB9100g;
     }
 
-    public void setVitB9100g(String vitB9100g) {
+    public void setVitB9100g(Double vitB9100g) {
         this.vitB9100g = vitB9100g;
     }
 
-    public String getVitB12100g() {
+    public Double getVitB12100g() {
         return vitB12100g;
     }
 
-    public void setVitB12100g(String vitB12100g) {
+    public void setVitB12100g(Double vitB12100g) {
         this.vitB12100g = vitB12100g;
     }
 
-    public String getCalcium100g() {
+    public Double getCalcium100g() {
         return calcium100g;
     }
 
-    public void setCalcium100g(String calcium100g) {
+    public void setCalcium100g(Double calcium100g) {
         this.calcium100g = calcium100g;
     }
 
-    public String getMagnesium100G() {
+    public Double getMagnesium100G() {
         return magnesium100G;
     }
 
-    public void setMagnesium100G(String magnesium100G) {
+    public void setMagnesium100G(Double magnesium100G) {
         this.magnesium100G = magnesium100G;
     }
 
-    public String getIron100G() {
+    public Double getIron100G() {
         return iron100G;
     }
 
-    public void setIron100G(String iron100G) {
+    public void setIron100G(Double iron100G) {
         this.iron100G = iron100G;
     }
 
-    public String getFer100G() {
+    public Double getFer100G() {
         return fer100G;
     }
 
-    public void setFer100G(String fer100G) {
+    public void setFer100G(Double fer100G) {
         this.fer100G = fer100G;
     }
 
-    public String getBetaCarotene100G() {
+    public Double getBetaCarotene100G() {
         return betaCarotene100G;
     }
 
-    public void setBetaCarotene100G(String betaCarotene100G) {
+    public void setBetaCarotene100G(Double betaCarotene100G) {
         this.betaCarotene100G = betaCarotene100G;
     }
 
