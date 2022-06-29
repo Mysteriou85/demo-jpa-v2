@@ -1,8 +1,8 @@
 package fr.diginamic;
 
-import fr.diginamic.entity.*;
-import fr.diginamic.entity.compte.Compte;
-import fr.diginamic.entity.operation.Operation;
+import bo.entity.*;
+import bo.entity.compte.Compte;
+import bo.entity.operation.Operation;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
