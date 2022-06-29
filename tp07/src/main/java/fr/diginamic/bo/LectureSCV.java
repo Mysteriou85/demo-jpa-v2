@@ -43,7 +43,7 @@ public class LectureSCV {
             int limit = 0;
 
             for (String[] ligne : lignes) {
-                if (ligne.length == 30 && !Arrays.equals(ligne, lignes.get(0)) && limit <= 50 ) {
+                if (ligne.length == 30 && !Arrays.equals(ligne, lignes.get(0)) && limit <= 1000 ) {
                     limit++;
                     em.getTransaction().begin();
 
@@ -88,7 +88,7 @@ public class LectureSCV {
                     // **********************
                     // * Ingrédient (Liste) *
                     // **********************
-                    String[] ligneIngredient = ligne[4].split(", ");
+                    String[] ligneIngredient = ligne[4].split(",");
                     List<Ingredient> ingredientList = new ArrayList<>();
                     for (String s : ligneIngredient) {
                         ingredient.setLibelle(s);
@@ -136,7 +136,7 @@ public class LectureSCV {
                     // *********************
                     // * Allergene (Liste) *
                     // *********************
-                    String[] ligneAllergene = ligne[28].split(", ");
+                    String[] ligneAllergene = ligne[28].split(",");
                     List<Allergene> allergeneList = new ArrayList<>();
                     for (String s : ligneAllergene) {
                         allergene.setLibelle(s);
@@ -156,7 +156,7 @@ public class LectureSCV {
                     // *******************
                     // * Additif (Liste) *
                     // *******************
-                    String[] ligneAdditif = ligne[29].split(", ");
+                    String[] ligneAdditif = ligne[29].split(",");
                     List<Additif> additifList = new ArrayList<>();
                     for (String s : ligneAdditif) {
                         additif.setLibelle(s);
@@ -175,6 +175,8 @@ public class LectureSCV {
 
                     // Fin ligne
                     // System.out.println();
+
+                    em.persist(produit);
 
                     em.getTransaction().commit();
 
