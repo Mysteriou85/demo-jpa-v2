@@ -25,25 +25,24 @@ public class LectureSCV {
                 lignes.add(line.split("\\|"));
             });
 
-            Produit produit = new Produit();
-            Categorie categorie = new Categorie();
-            Marque marque = new Marque();
-            Ingredient ingredient = new Ingredient();
-            Allergene allergene = new Allergene();
-            Additif additif = new Additif();
-
-
-
-            TypedQuery<Categorie> rechercheCategorie = em.createQuery("SELECT e FROM Categorie e WHERE e.libelle= :libelle", Categorie.class);
-            TypedQuery<Marque> rechercheMarque = em.createQuery("SELECT e FROM Marque e WHERE e.libelle= :libelle", Marque.class);
-            TypedQuery<Ingredient> rechercheIngredient = em.createQuery("SELECT e FROM Ingredient e WHERE e.libelle= :libelle", Ingredient.class);
-            TypedQuery<Allergene> rechercheAllergene = em.createQuery("SELECT e FROM Allergene e WHERE e.libelle= :libelle", Allergene.class);
-            TypedQuery<Additif> rechercheAdditif = em.createQuery("SELECT e FROM Additif e WHERE e.libelle= :libelle", Additif.class);
-
             int limit = 0;
 
             for (String[] ligne : lignes) {
-                if (ligne.length == 30 && !Arrays.equals(ligne, lignes.get(0)) && limit <= 1000 ) {
+                if (ligne.length == 30 && !Arrays.equals(ligne, lignes.get(0)) && limit <= 50 ) {
+
+                    TypedQuery<Categorie> rechercheCategorie = em.createQuery("SELECT e FROM Categorie e WHERE e.libelle= :libelle", Categorie.class);
+                    TypedQuery<Marque> rechercheMarque = em.createQuery("SELECT e FROM Marque e WHERE e.libelle= :libelle", Marque.class);
+                    TypedQuery<Ingredient> rechercheIngredient = em.createQuery("SELECT e FROM Ingredient e WHERE e.libelle= :libelle", Ingredient.class);
+                    TypedQuery<Allergene> rechercheAllergene = em.createQuery("SELECT e FROM Allergene e WHERE e.libelle= :libelle", Allergene.class);
+                    TypedQuery<Additif> rechercheAdditif = em.createQuery("SELECT e FROM Additif e WHERE e.libelle= :libelle", Additif.class);
+
+                    Produit produit = new Produit();
+                    Categorie categorie = new Categorie();
+                    Marque marque = new Marque();
+                    Ingredient ingredient = new Ingredient();
+                    Allergene allergene = new Allergene();
+                    Additif additif = new Additif();
+
                     limit++;
                     em.getTransaction().begin();
 
@@ -88,7 +87,7 @@ public class LectureSCV {
                     // **********************
                     // * Ingrédient (Liste) *
                     // **********************
-                    String[] ligneIngredient = ligne[4].split(",");
+                    String[] ligneIngredient = ligne[4].split("[,;]");
                     List<Ingredient> ingredientList = new ArrayList<>();
                     for (String s : ligneIngredient) {
                         ingredient.setLibelle(s);
@@ -136,7 +135,7 @@ public class LectureSCV {
                     // *********************
                     // * Allergene (Liste) *
                     // *********************
-                    String[] ligneAllergene = ligne[28].split(",");
+                    String[] ligneAllergene = ligne[28].split("[,;]");
                     List<Allergene> allergeneList = new ArrayList<>();
                     for (String s : ligneAllergene) {
                         allergene.setLibelle(s);
@@ -156,7 +155,7 @@ public class LectureSCV {
                     // *******************
                     // * Additif (Liste) *
                     // *******************
-                    String[] ligneAdditif = ligne[29].split(",");
+                    String[] ligneAdditif = ligne[29].split("[,;]");
                     List<Additif> additifList = new ArrayList<>();
                     for (String s : ligneAdditif) {
                         additif.setLibelle(s);
