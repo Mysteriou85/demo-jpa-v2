@@ -3,6 +3,7 @@ package fr.diginamic.bo.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "marque")
@@ -16,6 +17,10 @@ public class Marque {
 
     @Column(name = "LIBELLE")
     private String libelle;
+
+    @Column
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private Set<Produit> produits;
 
     public Marque() {
     }

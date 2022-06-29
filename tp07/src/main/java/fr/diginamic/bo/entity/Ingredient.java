@@ -3,6 +3,8 @@ package fr.diginamic.bo.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "ingredient")
@@ -16,6 +18,9 @@ public class Ingredient {
 
     @Column(name = "LIBELLE")
     private String libelle;
+
+    @ManyToMany(mappedBy = "ingredients")
+    private List<Produit> produits;
 
     public Ingredient() {
     }

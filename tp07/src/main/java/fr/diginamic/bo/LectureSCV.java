@@ -11,14 +11,15 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
 public class LectureSCV {
     public static void main(String[] args) throws IOException, URISyntaxException {
 
-//        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("demo-jpa");
-//        EntityManager em = entityManagerFactory.createEntityManager();
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("demo-jpa");
+        EntityManager em = entityManagerFactory.createEntityManager();
 
         List<String[]> lignes = new ArrayList<>();
         try(Stream<String> stream = Files.lines((Path.of(ClassLoader.getSystemResource("open-food-facts.csv").toURI())), StandardCharsets.UTF_8)) {
@@ -36,8 +37,7 @@ public class LectureSCV {
 //            em.getTransaction().begin();
 
             for (String[] ligne : lignes) {
-                if (ligne.length == 30) {
-
+                if (ligne.length == 30 && !Arrays.equals(ligne, lignes.get(0))) {
                     // * Catégorie *
                     // System.out.print("Catégorie: " + ligne[0]);
                     categorie.setLibelle(ligne[0]);
@@ -69,28 +69,28 @@ public class LectureSCV {
                     produit.setIngredients(ingredientList);
 
                     // * valeurs nutritionnelles *
-                    produit.setEnergie100g(Double.valueOf(ligne[5]));
-                    produit.setGraisse100g(Double.valueOf(ligne[6]));
-                    produit.setSucres100g(Double.valueOf(ligne[7]));
-                    produit.setFibres100g(Double.valueOf(ligne[8]));
-                    produit.setProteines100g(Double.valueOf(ligne[9]));
-                    produit.setSel100g(Double.valueOf(ligne[10]));
-                    produit.setVitA100g(Double.valueOf(ligne[11]));
-                    produit.setVitD100g(Double.valueOf(ligne[12]));
-                    produit.setVitE100g(Double.valueOf(ligne[13]));
-                    produit.setVitK100g(Double.valueOf(ligne[14]));
-                    produit.setVitC100g(Double.valueOf(ligne[15]));
-                    produit.setVitB1100g(Double.valueOf(ligne[16]));
-                    produit.setVitB2100g(Double.valueOf(ligne[17]));
-                    produit.setVitPP100g(Double.valueOf(ligne[18]));
-                    produit.setVitB6100g(Double.valueOf(ligne[19]));
-                    produit.setVitB9100g(Double.valueOf(ligne[20]));
-                    produit.setVitB12100g(Double.valueOf(ligne[21]));
-                    produit.setCalcium100g(Double.valueOf(ligne[22]));
-                    produit.setMagnesium100G(Double.valueOf(ligne[23]));
-                    produit.setIron100G(Double.valueOf(ligne[24]));
-                    produit.setFer100G(Double.valueOf(ligne[25]));
-                    produit.setBetaCarotene100G(Double.valueOf(ligne[26]));
+                    produit.setEnergie100g(String.valueOf(ligne[5]));
+                    produit.setGraisse100g(String.valueOf(ligne[6]));
+                    produit.setSucres100g(String.valueOf(ligne[7]));
+                    produit.setFibres100g(String.valueOf(ligne[8]));
+                    produit.setProteines100g(String.valueOf(ligne[9]));
+                    produit.setSel100g(String.valueOf(ligne[10]));
+                    produit.setVitA100g(String.valueOf(ligne[11]));
+                    produit.setVitD100g(String.valueOf(ligne[12]));
+                    produit.setVitE100g(String.valueOf(ligne[13]));
+                    produit.setVitK100g(String.valueOf(ligne[14]));
+                    produit.setVitC100g(String.valueOf(ligne[15]));
+                    produit.setVitB1100g(String.valueOf(ligne[16]));
+                    produit.setVitB2100g(String.valueOf(ligne[17]));
+                    produit.setVitPP100g(String.valueOf(ligne[18]));
+                    produit.setVitB6100g(String.valueOf(ligne[19]));
+                    produit.setVitB9100g(String.valueOf(ligne[20]));
+                    produit.setVitB12100g(String.valueOf(ligne[21]));
+                    produit.setCalcium100g(String.valueOf(ligne[22]));
+                    produit.setMagnesium100G(String.valueOf(ligne[23]));
+                    produit.setIron100G(String.valueOf(ligne[24]));
+                    produit.setFer100G(String.valueOf(ligne[25]));
+                    produit.setBetaCarotene100G(String.valueOf(ligne[26]));
 
                     produit.setPresenceHuilePalme(ligne[27]);
 
@@ -106,7 +106,7 @@ public class LectureSCV {
                     // * Additif (Liste) *
                     String[] ligneAdditif = ligne[29].split(", ");
                     List<Additif> additifList = new ArrayList<>();
-                    for (String s : ligneAllergene) {
+                    for (String s : ligneAdditif) {
                         additif.setLibelle(s);
                         additifList.add(additif);
                     }
