@@ -50,7 +50,19 @@ public class OpenFoodFactDAO {
     }
 
     public Categorie getCategorie(String libelle) {
-        TypedQuery<Categorie> query = em.createQuery("select e from Categorie e where e.libelle = :libelle", Categorie.class);
+        TypedQuery<Categorie> query = em.createQuery("SELECT e FROM Categorie e WHERE e.libelle = :libelle", Categorie.class);
+        query.setParameter("libelle", libelle);
+        return query.getResultList().size() > 0 ? query.getResultList().get(0) : null;
+    }
+
+    public Marque getMarque(String libelle) {
+        TypedQuery<Marque> query = em.createQuery("SELECT e FROM Marque e WHERE e.libelle = :libelle", Marque.class);
+        query.setParameter("libelle", libelle);
+        return query.getResultList().size() > 0 ? query.getResultList().get(0) : null;
+    }
+
+    public Ingredient getIngredient(String libelle) {
+        TypedQuery<Ingredient> query = em.createQuery("SELECT e FROM Ingredient e WHERE e.libelle = :libelle", Ingredient.class);
         query.setParameter("libelle", libelle);
         return query.getResultList().size() > 0 ? query.getResultList().get(0) : null;
     }

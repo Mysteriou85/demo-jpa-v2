@@ -69,15 +69,16 @@ public class App {
                     // * Marque *
                     // **********
                     marque.setLibelle(ligne[1]);
-                    rechercheMarque.setParameter("libelle", marque.getLibelle());
-
-                    List<Marque> verifMarque = rechercheMarque.getResultList();
-                    if(verifMarque.isEmpty()) {
-                        produit.setMarque(marque);
-                        em.persist(marque);
-                    } else {
-                        produit.setMarque(verifMarque.get(0));
-                    }
+                    service.setMarque(marque.getLibelle());
+//                    rechercheMarque.setParameter("libelle", marque.getLibelle());
+//
+//                    List<Marque> verifMarque = rechercheMarque.getResultList();
+//                    if(verifMarque.isEmpty()) {
+//                        produit.setMarque(marque);
+//                        em.persist(marque);
+//                    } else {
+//                        produit.setMarque(verifMarque.get(0));
+//                    }
 
                     // *******
                     // * Nom *
