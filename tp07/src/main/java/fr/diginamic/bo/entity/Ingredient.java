@@ -16,7 +16,7 @@ public class Ingredient {
     @GenericGenerator(name = "seqIngredient", strategy = "increment")
     private Integer id;
 
-    @Column(name = "LIBELLE")
+    @Column(name = "LIBELLE", length = 510)
     private String libelle;
 
     @ManyToMany(mappedBy = "ingredients")

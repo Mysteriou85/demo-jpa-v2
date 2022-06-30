@@ -16,7 +16,7 @@ public class Allergene {
     @GenericGenerator(name = "seqAllergene", strategy = "increment")
     private Integer id;
 
-    @Column(name = "LIBELLE")
+    @Column(name = "LIBELLE", length = 510)
     private String libelle;
 
     @ManyToMany(mappedBy = "allergenes")

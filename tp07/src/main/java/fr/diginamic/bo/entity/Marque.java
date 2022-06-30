@@ -15,7 +15,7 @@ public class Marque {
     @GenericGenerator(name = "seqMarque", strategy = "increment")
     private Integer id;
 
-    @Column(name = "LIBELLE")
+    @Column(name = "LIBELLE", length = 510)
     private String libelle;
 
     @Column

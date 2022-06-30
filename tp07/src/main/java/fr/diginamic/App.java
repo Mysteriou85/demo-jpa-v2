@@ -37,37 +37,28 @@ public class App {
             int limit = 0;
 
             for (String[] ligne : lignes) {
-                if (ligne.length == 30 && !Arrays.equals(ligne, lignes.get(0)) && limit <= 10) {
+                if (ligne.length == 30 && !Arrays.equals(ligne, lignes.get(0)) && limit <= 500) {
 
                     TypedQuery<Allergene> rechercheAllergene = em.createQuery("SELECT e FROM Allergene e WHERE e.libelle= :libelle", Allergene.class);
                     TypedQuery<Additif> rechercheAdditif = em.createQuery("SELECT e FROM Additif e WHERE e.libelle= :libelle", Additif.class);
 
                     Produit produit = new Produit();
-
-//                    limit++;
-//                    em.getTransaction().begin();
+                    limit++;
 
                     // Catégorie
                     Categorie categorie = service.getCategorie(ligne[0]);
                     produit.setCategorie(categorie);
-
                     // Marque
                     Marque marque = service.getMarque(ligne[1]);
                     produit.setMarque(marque);
-
                     // Nom
                     produit.setNomProduit(ligne[2]);
-
                     // Nutrition Grade
                     produit.setScoreNutritionnel(ligne[3]);
-
                     // Ingrédient (Liste)
                     List<Ingredient> ingredientList = service.getIngredient(ligne[4]);
                     produit.setIngredients(ingredientList);
-
-                    // ***************************
-                    // * valeurs nutritionnelles *
-                    // ***************************
+                    // valeurs nutritionnelles
                     produit.setEnergie100g(String.valueOf(ligne[5]));
                     produit.setGraisse100g(String.valueOf(ligne[6]));
                     produit.setSucres100g(String.valueOf(ligne[7]));
@@ -90,24 +81,16 @@ public class App {
                     produit.setIron100G(String.valueOf(ligne[24]));
                     produit.setFer100G(String.valueOf(ligne[25]));
                     produit.setBetaCarotene100G(String.valueOf(ligne[26]));
-
                     produit.setPresenceHuilePalme(ligne[27]);
-
                     // Allergene (Liste)
                     List<Allergene> allergeneList = service.getAllergene(ligne[28]);
                     produit.setAllergenes(allergeneList);
-
                     // Additif (Liste)
                     List<Additif> additifList = service.getAdditif(ligne[29]);
                     produit.setAdditifs(additifList);
 
                     // Fin ligne
-                    // System.out.println();
                     dao.createProduit(produit);
-
-                    //em.persist(produit);
-
-
                 } else {
                     System.err.println("Cette valeur n'est pas lisible !");
                 }
