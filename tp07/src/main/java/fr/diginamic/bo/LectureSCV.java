@@ -28,7 +28,7 @@ public class LectureSCV {
             int limit = 0;
 
             for (String[] ligne : lignes) {
-                if (ligne.length == 30 && !Arrays.equals(ligne, lignes.get(0)) && limit <= 50 ) {
+                if (ligne.length == 30 && !Arrays.equals(ligne, lignes.get(0)) && limit <= 10 ) {
 
                     TypedQuery<Categorie> rechercheCategorie = em.createQuery("SELECT e FROM Categorie e WHERE e.libelle= :libelle", Categorie.class);
                     TypedQuery<Marque> rechercheMarque = em.createQuery("SELECT e FROM Marque e WHERE e.libelle= :libelle", Marque.class);
@@ -39,9 +39,6 @@ public class LectureSCV {
                     Produit produit = new Produit();
                     Categorie categorie = new Categorie();
                     Marque marque = new Marque();
-                    Ingredient ingredient = new Ingredient();
-                    Allergene allergene = new Allergene();
-                    Additif additif = new Additif();
 
                     limit++;
                     em.getTransaction().begin();
@@ -90,7 +87,8 @@ public class LectureSCV {
                     String[] ligneIngredient = ligne[4].split("[,;]");
                     List<Ingredient> ingredientList = new ArrayList<>();
                     for (String s : ligneIngredient) {
-                        ingredient.setLibelle(s);
+                        Ingredient ingredient = new Ingredient();
+                        ingredient.setLibelle(s.trim().toLowerCase());
 
                         rechercheIngredient.setParameter("libelle", ingredient.getLibelle());
 
@@ -138,7 +136,8 @@ public class LectureSCV {
                     String[] ligneAllergene = ligne[28].split("[,;]");
                     List<Allergene> allergeneList = new ArrayList<>();
                     for (String s : ligneAllergene) {
-                        allergene.setLibelle(s);
+                        Allergene allergene = new Allergene();
+                        allergene.setLibelle(s.trim().toLowerCase());
 
                         rechercheAllergene.setParameter("libelle", allergene.getLibelle());
 
@@ -158,7 +157,8 @@ public class LectureSCV {
                     String[] ligneAdditif = ligne[29].split("[,;]");
                     List<Additif> additifList = new ArrayList<>();
                     for (String s : ligneAdditif) {
-                        additif.setLibelle(s);
+                        Additif additif = new Additif();
+                        additif.setLibelle(s.trim().toLowerCase());
 
                         rechercheAdditif.setParameter("libelle", additif.getLibelle());
 
