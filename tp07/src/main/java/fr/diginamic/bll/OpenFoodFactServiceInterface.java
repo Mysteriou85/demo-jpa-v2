@@ -1,7 +1,8 @@
 package fr.diginamic.bll;
 
-public interface OpenFoodFactServiceInterface {
+import fr.diginamic.bo.entity.Produit;
 
+public interface OpenFoodFactServiceInterface {
 
 
 }
