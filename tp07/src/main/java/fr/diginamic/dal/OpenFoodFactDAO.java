@@ -67,5 +67,17 @@ public class OpenFoodFactDAO {
         return query.getResultList().size() > 0 ? query.getResultList().get(0) : null;
     }
 
+    public Allergene getAllergene(String libelle) {
+        TypedQuery<Allergene> query = em.createQuery("SELECT e FROM Allergene e WHERE e.libelle = :libelle", Allergene.class);
+        query.setParameter("libelle", libelle);
+        return query.getResultList().size() > 0 ? query.getResultList().get(0) : null;
+    }
+
+    public Additif getAdditif(String libelle) {
+        TypedQuery<Additif> query = em.createQuery("SELECT e FROM Additif e WHERE e.libelle = :libelle", Additif.class);
+        query.setParameter("libelle", libelle);
+        return query.getResultList().size() > 0 ? query.getResultList().get(0) : null;
+    }
+
 
 }

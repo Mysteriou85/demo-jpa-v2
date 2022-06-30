@@ -2,6 +2,7 @@ package fr.diginamic;
 
 import fr.diginamic.bll.OpenFoodFactService;
 import fr.diginamic.bo.entity.*;
+import fr.diginamic.dal.OpenFoodFactDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -19,15 +20,16 @@ import java.util.stream.Stream;
 
 public class App {
 
-    static OpenFoodFactService service;
-
     public static void main(String[] args) throws IOException, URISyntaxException {
 
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("demo-jpa");
         EntityManager em = entityManagerFactory.createEntityManager();
 
+        OpenFoodFactDAO dao = new OpenFoodFactDAO(em);
+        OpenFoodFactService service = new OpenFoodFactService(dao);
+
         List<String[]> lignes = new ArrayList<>();
-        try(Stream<String> stream = Files.lines((Path.of(ClassLoader.getSystemResource("open-food-facts.csv").toURI())), StandardCharsets.UTF_8)) {
+        try (Stream<String> stream = Files.lines((Path.of(ClassLoader.getSystemResource("open-food-facts.csv").toURI())), StandardCharsets.UTF_8)) {
             stream.forEach(line -> {
                 lignes.add(line.split("\\|"));
             });
@@ -35,80 +37,32 @@ public class App {
             int limit = 0;
 
             for (String[] ligne : lignes) {
-                if (ligne.length == 30 && !Arrays.equals(ligne, lignes.get(0)) && limit <= 10 ) {
+                if (ligne.length == 30 && !Arrays.equals(ligne, lignes.get(0)) && limit <= 10) {
 
-                    TypedQuery<Categorie> rechercheCategorie = em.createQuery("SELECT e FROM Categorie e WHERE e.libelle= :libelle", Categorie.class);
-                    TypedQuery<Marque> rechercheMarque = em.createQuery("SELECT e FROM Marque e WHERE e.libelle= :libelle", Marque.class);
-                    TypedQuery<Ingredient> rechercheIngredient = em.createQuery("SELECT e FROM Ingredient e WHERE e.libelle= :libelle", Ingredient.class);
                     TypedQuery<Allergene> rechercheAllergene = em.createQuery("SELECT e FROM Allergene e WHERE e.libelle= :libelle", Allergene.class);
                     TypedQuery<Additif> rechercheAdditif = em.createQuery("SELECT e FROM Additif e WHERE e.libelle= :libelle", Additif.class);
 
                     Produit produit = new Produit();
-                    Categorie categorie = new Categorie();
-                    Marque marque = new Marque();
 
-                    limit++;
-                    em.getTransaction().begin();
+//                    limit++;
+//                    em.getTransaction().begin();
 
-                    // *************
-                    // * Catégorie *
-                    // *************
-                    categorie.setLibelle(ligne[0]);
-                    service.setCategorie(categorie.getLibelle());
-//                    rechercheCategorie.setParameter("libelle", categorie.getLibelle());
-//
-//                    List<Categorie> verifCategorie = rechercheCategorie.getResultList();
-//                    if(verifCategorie.isEmpty()) {
-//                        produit.setCategorie(categorie);
-//                        em.persist(categorie);
-//                    } else {
-//                        produit.setCategorie(verifCategorie.get(0));
-//                    }
+                    // Catégorie
+                    Categorie categorie = service.getCategorie(ligne[0]);
+                    produit.setCategorie(categorie);
 
-                    // **********
-                    // * Marque *
-                    // **********
-                    marque.setLibelle(ligne[1]);
-                    service.setMarque(marque.getLibelle());
-//                    rechercheMarque.setParameter("libelle", marque.getLibelle());
-//
-//                    List<Marque> verifMarque = rechercheMarque.getResultList();
-//                    if(verifMarque.isEmpty()) {
-//                        produit.setMarque(marque);
-//                        em.persist(marque);
-//                    } else {
-//                        produit.setMarque(verifMarque.get(0));
-//                    }
+                    // Marque
+                    Marque marque = service.getMarque(ligne[1]);
+                    produit.setMarque(marque);
 
-                    // *******
-                    // * Nom *
-                    // *******
+                    // Nom
                     produit.setNomProduit(ligne[2]);
 
-                    // *******************
-                    // * Nutrition Grade *
-                    // *******************
+                    // Nutrition Grade
                     produit.setScoreNutritionnel(ligne[3]);
 
-                    // **********************
-                    // * Ingrédient (Liste) *
-                    // **********************
-                    String[] ligneIngredient = ligne[4].split("[,;]");
-                    List<Ingredient> ingredientList = new ArrayList<>();
-                    for (String s : ligneIngredient) {
-                        Ingredient ingredient = new Ingredient();
-                        ingredient.setLibelle(s.trim().toLowerCase());
-
-                        rechercheIngredient.setParameter("libelle", ingredient.getLibelle());
-
-                        List<Ingredient> verifIngredient = rechercheIngredient.getResultList();
-                        if(verifIngredient.isEmpty()) {
-                            ingredientList.add(ingredient);
-                            em.persist(ingredient);
-                        } else {
-                            ingredientList.add(verifIngredient.get(0));
-                        }
-                    }
+                    // Ingrédient (Liste)
+                    List<Ingredient> ingredientList = service.getIngredient(ligne[4]);
                     produit.setIngredients(ingredientList);
 
                     // ***************************
@@ -139,54 +93,20 @@ public class App {
 
                     produit.setPresenceHuilePalme(ligne[27]);
 
-                    // *********************
-                    // * Allergene (Liste) *
-                    // *********************
-                    String[] ligneAllergene = ligne[28].split("[,;]");
-                    List<Allergene> allergeneList = new ArrayList<>();
-                    for (String s : ligneAllergene) {
-                        Allergene allergene = new Allergene();
-                        allergene.setLibelle(s.trim().toLowerCase());
-
-                        rechercheAllergene.setParameter("libelle", allergene.getLibelle());
-
-                        List<Allergene> verifAllergene = rechercheAllergene.getResultList();
-                        if(verifAllergene.isEmpty()) {
-                            allergeneList.add(allergene);
-                            em.persist(allergene);
-                        } else {
-                            allergeneList.add(verifAllergene.get(0));
-                        }
-                    }
+                    // Allergene (Liste)
+                    List<Allergene> allergeneList = service.getAllergene(ligne[28]);
                     produit.setAllergenes(allergeneList);
 
-                    // *******************
-                    // * Additif (Liste) *
-                    // *******************
-                    String[] ligneAdditif = ligne[29].split("[,;]");
-                    List<Additif> additifList = new ArrayList<>();
-                    for (String s : ligneAdditif) {
-                        Additif additif = new Additif();
-                        additif.setLibelle(s.trim().toLowerCase());
-
-                        rechercheAdditif.setParameter("libelle", additif.getLibelle());
-
-                        List<Additif> verifAdditif = rechercheAdditif.getResultList();
-                        if(verifAdditif.isEmpty()) {
-                            additifList.add(additif);
-                            em.persist(additif);
-                        } else {
-                            additifList.add(verifAdditif.get(0));
-                        }
-                    }
+                    // Additif (Liste)
+                    List<Additif> additifList = service.getAdditif(ligne[29]);
                     produit.setAdditifs(additifList);
 
                     // Fin ligne
                     // System.out.println();
+                    dao.createProduit(produit);
 
-                    em.persist(produit);
+                    //em.persist(produit);
 
-                    em.getTransaction().commit();
 
                 } else {
                     System.err.println("Cette valeur n'est pas lisible !");

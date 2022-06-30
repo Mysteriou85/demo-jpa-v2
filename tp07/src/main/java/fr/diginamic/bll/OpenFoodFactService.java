@@ -1,9 +1,6 @@
 package fr.diginamic.bll;
 
-import fr.diginamic.bo.entity.Categorie;
-import fr.diginamic.bo.entity.Ingredient;
-import fr.diginamic.bo.entity.Marque;
-import fr.diginamic.bo.entity.Produit;
+import fr.diginamic.bo.entity.*;
 import fr.diginamic.dal.OpenFoodFactDAO;
 
 import java.util.ArrayList;
@@ -18,30 +15,30 @@ public class OpenFoodFactService implements OpenFoodFactServiceInterface {
         this.dao = dao;
     }
 
-    public void setCategorie(String ligneCategorie) {
+    public Categorie getCategorie(String ligneCategorie) {
         Categorie categorie = new Categorie();
         categorie.setLibelle(ligneCategorie);
         if(dao.getCategorie(ligneCategorie) == null) {
-            produit.setCategorie(categorie);
             dao.createCategorie(categorie);
+            return categorie;
         } else {
-            produit.setCategorie(dao.getCategorie(ligneCategorie));
+            return dao.getCategorie(ligneCategorie);
         }
     }
 
-    public void setMarque(String ligneMarque) {
+    public Marque getMarque(String ligneMarque) {
         Marque marque = new Marque();
         marque.setLibelle(ligneMarque);
         if(dao.getMarque(ligneMarque) == null) {
-            produit.setMarque(marque);
             dao.createMarque(marque);
+            return marque;
         } else {
-            produit.setMarque(dao.getMarque(ligneMarque));
+            return dao.getMarque(ligneMarque);
         }
     }
 
-    public void setIngredient(String[] ligne) {
-        String[] ligneIngredient = ligne[4].split("[,;]");
+    public List<Ingredient> getIngredient(String ligne) {
+        String[] ligneIngredient = ligne.split("[,;]");
 
         List<Ingredient> ingredientList = new ArrayList<>();
         for (String s : ligneIngredient) {
@@ -55,7 +52,43 @@ public class OpenFoodFactService implements OpenFoodFactServiceInterface {
                 ingredientList.add(dao.getIngredient(ingredient.getLibelle()));
             }
         }
-        produit.setIngredients(ingredientList);
+        return ingredientList;
+    }
+
+    public List<Allergene> getAllergene(String ligne) {
+        String[] ligneAllergene = ligne.split("[,;]");
+
+        List<Allergene> allergeneList = new ArrayList<>();
+        for (String s : ligneAllergene) {
+            Allergene allergene = new Allergene();
+            allergene.setLibelle(s.trim().toLowerCase());
+
+            if(dao.getAllergene(allergene.getLibelle()) == null) {
+                allergeneList.add(allergene);
+                dao.createAllergene(allergene);
+            } else {
+                allergeneList.add(dao.getAllergene(allergene.getLibelle()));
+            }
+        }
+        return allergeneList;
+    }
+
+    public List<Additif> getAdditif(String ligne) {
+        String[] ligneAdditif = ligne.split("[,;]");
+
+        List<Additif> additifList = new ArrayList<>();
+        for (String s : ligneAdditif) {
+            Additif additif = new Additif();
+            additif.setLibelle(s.trim().toLowerCase());
+
+            if(dao.getAdditif(additif.getLibelle()) == null) {
+                additifList.add(additif);
+                dao.createAdditif(additif);
+            } else {
+                additifList.add(dao.getAdditif(additif.getLibelle()));
+            }
+        }
+        return additifList;
     }
 
 }
