@@ -3,11 +3,10 @@ package fr.diginamic.bo.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
-@Table(name = "cycle")
-public abstract class Cycle {
+@Table(name = "client")
+public class Client {
 
     @Id
     @Column(name = "ID")
@@ -15,13 +14,9 @@ public abstract class Cycle {
     @GenericGenerator(name = "seqAdditif", strategy = "increment")
     private Integer id;
 
-    @Column(name = "MARQUE")
-    private String marque;
-    @Column(name = "MODELE")
-    private String modele;
-    @Column(name = "DATA_ACHAT")
-    private LocalDate dataAchat;
-
-
+    private String nom;
+    private String prenom;
+    private double taille;
+    private double portefeuille;
 
 }
