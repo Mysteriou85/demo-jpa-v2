@@ -2,6 +2,7 @@ package fr.diginamic.dal;
 
 import fr.diginamic.bo.entity.Client;
 import fr.diginamic.bo.entity.Location;
+import fr.diginamic.bo.entity.PeriodeLocation;
 import fr.diginamic.bo.entity.cycle.Cycle;
 import fr.diginamic.bo.entity.cycle.Gyropode;
 import fr.diginamic.bo.entity.cycle.Gyroroue;
@@ -64,6 +65,19 @@ public class CycleDAO {
         em.getTransaction().begin();
         em.merge(client);
         em.getTransaction().commit();
+    }
+
+    public List<PeriodeLocation> findPeriodesLocations(Cycle cycle) {
+        List<PeriodeLocation> periodesLocations;
+        TypedQuery<PeriodeLocation> query = em.createQuery("" +
+                "Select periodeLocation " +
+                "FROM Location l " +
+                "JOIN l.cycles cycles " +
+                "JOIN l.periodeLocation periodeLocation " +
+                "WHERE cycles.id = :cycleId", PeriodeLocation.class);
+        query.setParameter("cycleId", cycle.getId());
+        periodesLocations = query.getResultList();
+        return periodesLocations;
     }
 
 }
